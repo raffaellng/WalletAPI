@@ -12,8 +12,8 @@ using WalletAPI.Infrastructure.Data;
 namespace WalletAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250511031616_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250513175919_UpdateModel")]
+    partial class UpdateModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
