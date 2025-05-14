@@ -7,11 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Validators\" />
     <Folder Include="UseCases\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WalletAPI.Domain\WalletAPI.Domain.csproj" />
+    <ProjectReference Include="..\WalletAPI.Infrastructure\WalletAPI.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
