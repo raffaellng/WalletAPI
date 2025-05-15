@@ -14,11 +14,17 @@ namespace WalletAPI.Infrastructure.Auth
     {
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
+        private readonly string _key;
+        private readonly string _issuer;
+        private readonly string _audience;
 
         public JwtService(IConfiguration configuration, AppDbContext context)
         {
             _configuration = configuration;
             _context = context;
+            _key = configuration["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key");
+            _issuer = configuration["Jwt:Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
+            _audience = configuration["Jwt:Audience"] ?? throw new ArgumentNullException("Jwt:Audience");
         }
 
         public string GenerateToken(string userId, string email)
@@ -30,12 +36,12 @@ namespace WalletAPI.Infrastructure.Auth
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: _issuer,
+                audience: _audience,
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: creds

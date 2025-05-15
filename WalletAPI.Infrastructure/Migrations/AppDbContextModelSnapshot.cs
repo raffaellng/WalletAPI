@@ -29,22 +29,23 @@ namespace WalletAPI.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ReceiverWalletId")
+                    b.Property<Guid>("ReceiverUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SenderWalletId")
+                    b.Property<Guid>("SenderUserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverWalletId");
+                    b.HasIndex("ReceiverUserId");
 
-                    b.HasIndex("SenderWalletId");
+                    b.HasIndex("SenderUserId");
 
                     b.ToTable("Transactions");
                 });
@@ -62,8 +63,7 @@ namespace WalletAPI.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -84,7 +84,8 @@ namespace WalletAPI.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 2)
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -99,21 +100,21 @@ namespace WalletAPI.Infrastructure.Migrations
 
             modelBuilder.Entity("WalletAPI.Domain.Entities.Transaction", b =>
                 {
-                    b.HasOne("WalletAPI.Domain.Entities.Wallet", "ReceiverWallet")
-                        .WithMany("TransactionsAsReceiver")
-                        .HasForeignKey("ReceiverWalletId")
+                    b.HasOne("WalletAPI.Domain.Entities.User", "ReceiverUser")
+                        .WithMany()
+                        .HasForeignKey("ReceiverUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WalletAPI.Domain.Entities.Wallet", "SenderWallet")
-                        .WithMany("TransactionsAsSender")
-                        .HasForeignKey("SenderWalletId")
+                    b.HasOne("WalletAPI.Domain.Entities.User", "SenderUser")
+                        .WithMany()
+                        .HasForeignKey("SenderUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ReceiverWallet");
+                    b.Navigation("ReceiverUser");
 
-                    b.Navigation("SenderWallet");
+                    b.Navigation("SenderUser");
                 });
 
             modelBuilder.Entity("WalletAPI.Domain.Entities.Wallet", b =>
@@ -131,13 +132,6 @@ namespace WalletAPI.Infrastructure.Migrations
                 {
                     b.Navigation("Wallet")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("WalletAPI.Domain.Entities.Wallet", b =>
-                {
-                    b.Navigation("TransactionsAsReceiver");
-
-                    b.Navigation("TransactionsAsSender");
                 });
 #pragma warning restore 612, 618
         }

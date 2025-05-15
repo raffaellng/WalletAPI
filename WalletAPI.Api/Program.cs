@@ -8,6 +8,7 @@ using WalletAPI.Application.Services;
 using WalletAPI.Domain.Interfaces;
 using WalletAPI.Infrastructure.Auth;
 using WalletAPI.Infrastructure.Data;
+using WalletAPI.Infrastructure.Data.Repository;
 
 namespace WalletAPI.Api
 {
@@ -21,7 +22,13 @@ namespace WalletAPI.Api
             builder.Services.AddScoped<IAuthAppService, AuthAppService>();
             builder.Services.AddScoped<IAuthService, JwtService>();
             builder.Services.AddAuthorization();
-            builder.Services.AddScoped<JwtService>();
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserAppService, UserAppService>();
+
+            var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key não configurado.");
+            var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer não configurado.");
+            var jwtAudience = builder.Configuration["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience não configurado.");
 
             //JWT Authentication
             builder.Services.AddAuthentication(options =>
@@ -31,15 +38,15 @@ namespace WalletAPI.Api
             })
             .AddJwtBearer(options =>
             {
-                var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!);
+                var key = Encoding.UTF8.GetBytes(jwtKey);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtAudience,
                     IssuerSigningKey = new SymmetricSecurityKey(key)
                 };
             });

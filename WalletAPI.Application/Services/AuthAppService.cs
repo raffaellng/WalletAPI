@@ -1,19 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WalletAPI.Application.DTOs.Auth;
+﻿using WalletAPI.Application.DTOs.Auth;
 using WalletAPI.Application.Interfaces;
 using WalletAPI.Domain.Interfaces;
-using WalletAPI.Infrastructure.Data;
 
 namespace WalletAPI.Application.Services
 {
     public class AuthAppService : IAuthAppService
     {
-        private readonly AppDbContext _context;
         private readonly IAuthService _authService;
 
-        public AuthAppService(AppDbContext context, IAuthService authService)
+        public AuthAppService(IAuthService authService)
         {
-            _context = context;
             _authService = authService;
         }
 
