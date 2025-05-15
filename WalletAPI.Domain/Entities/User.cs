@@ -3,10 +3,19 @@
     public class User
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string Name { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
+        public string Name { get; private set; }
+        public string Email { get; private set; }
+        public string PasswordHash { get; private set; }
 
-        public required Wallet Wallet { get; set; }
+        public Wallet Wallet { get; private set; } = new Wallet();
+
+        public User(string name, string email, string passwordHash)
+        {
+            Name = name;
+            Email = email;
+            PasswordHash = passwordHash;
+        }
+
+        private User() { }
     }
 }

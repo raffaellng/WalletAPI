@@ -23,8 +23,15 @@ namespace WalletAPI.Api.Controllers
         [SwaggerResponse(500, "Erro interno")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
-            var result = await _authAppService.LoginAsync(request);
-            return Ok(result);
+            try
+            {
+                var result = await _authAppService.LoginAsync(request);
+                return Ok(result);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized("Usuário ou senha inválidos.");
+            }
         }
     }
 }
