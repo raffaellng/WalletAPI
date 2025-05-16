@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 using WalletAPI.Application.DTOs.Auth;
 using WalletAPI.Application.Interfaces;
 
