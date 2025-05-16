@@ -23,7 +23,10 @@ namespace WalletAPI.Api.Controllers
         [HttpPost]
         [SwaggerOperation(Summary = "Criação de usuário")]
         [SwaggerResponse(201, "Usuário criado com sucesso", typeof(UserResponseDto))]
-        [SwaggerResponse(400, "Erro de validação")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(401, "Sem permissão para realizar essa ação")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> Create([FromBody] UserCreateRequestDto dto)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

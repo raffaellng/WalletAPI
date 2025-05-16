@@ -28,7 +28,7 @@ namespace WalletAPI.Infrastructure.Data.Repository
 
             if (inicio.HasValue)
                 query = query.Where(t => t.CreatedAt >= DateTime.SpecifyKind(inicio.Value, DateTimeKind.Utc));
-
+            
             if (fim.HasValue)
                 query = query.Where(t => t.CreatedAt <= DateTime.SpecifyKind(fim.Value, DateTimeKind.Utc));
 

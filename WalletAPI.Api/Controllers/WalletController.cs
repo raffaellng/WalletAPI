@@ -22,8 +22,10 @@ namespace WalletAPI.Api.Controllers
         [HttpGet("saldo")]
         [SwaggerOperation(Summary = "Consultar saldo", Description = "Retorna o saldo atual da carteira do usuário autenticado.")]
         [SwaggerResponse(200, "Saldo retornado com sucesso", typeof(object))]
+        [SwaggerResponse(400, "Bad Request")]
         [SwaggerResponse(401, "Token inválido ou ausente")]
-        [SwaggerResponse(500, "Erro interno")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> GetBalance()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -38,8 +40,10 @@ namespace WalletAPI.Api.Controllers
         [HttpGet("saldo/{emailOrId}")]
         [SwaggerOperation(Summary = "Consultar saldo por email ou Id", Description = "Retorna o saldo atual da carteira do usuário passado por email ou pelo id não autenticado.")]
         [SwaggerResponse(200, "Saldo retornado com sucesso", typeof(object))]
+        [SwaggerResponse(400, "Bad Request")]
         [SwaggerResponse(401, "Token inválido ou ausente")]
-        [SwaggerResponse(500, "Erro interno")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> GetBalanceEmailOrId([SwaggerParameter(Description = "Email ou Id")] string emailOrId)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -56,7 +60,8 @@ namespace WalletAPI.Api.Controllers
         [SwaggerResponse(204, "Depósito realizado com sucesso")]
         [SwaggerResponse(400, "Valor inválido para depósito")]
         [SwaggerResponse(401, "Token inválido ou ausente")]
-        [SwaggerResponse(500, "Erro interno")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> Deposit([FromBody] WalletDepositRequestDto dto)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -73,7 +78,8 @@ namespace WalletAPI.Api.Controllers
         [SwaggerResponse(204, "Depósito realizado com sucesso")]
         [SwaggerResponse(400, "Valor inválido para depósito")]
         [SwaggerResponse(401, "Token inválido ou ausente")]
-        [SwaggerResponse(500, "Erro interno")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> DepositForEailOrId([FromBody] WalletDepositForIdOrEmailRequestDto dto)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

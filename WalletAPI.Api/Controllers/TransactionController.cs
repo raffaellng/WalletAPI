@@ -23,9 +23,10 @@ namespace WalletAPI.Api.Controllers
         [HttpPost]
         [SwaggerOperation(Summary = "Criar transferência", Description = "Transfere saldo da carteira do usuário autenticado para outro usuário.")]
         [SwaggerResponse(204, "Transferência realizada com sucesso")]
-        [SwaggerResponse(400, "Erro de validação")]
-        [SwaggerResponse(401, "Não autorizado")]
-        [SwaggerResponse(500, "Erro interno")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(401, "Tranferencia inválida")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> Transfer([FromBody] TransactionCreateRequestDto dto)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -40,9 +41,10 @@ namespace WalletAPI.Api.Controllers
         [HttpPost("manual-transfer")]
         [SwaggerOperation(Summary = "Transferência administrativa", Description = "Permite transferir saldo de qualquer usuário para qualquer outro.")]
         [SwaggerResponse(204, "Transferência realizada com sucesso")]
-        [SwaggerResponse(400, "Erro de validação")]
-        [SwaggerResponse(401, "Não autorizado")]
-        [SwaggerResponse(500, "Erro interno")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(401, "Tranferencia inválida")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> AdminTransfer([FromBody] TransactionManualCreateRequestDto dto)
         {
             await _transactionAppService.CreateManualTransferAsync(dto);
@@ -52,8 +54,10 @@ namespace WalletAPI.Api.Controllers
         [HttpGet]
         [SwaggerOperation(Summary = "Listar transferências realizadas", Description = "Retorna todas as transferências feitas pelo usuário autenticado, com filtros opcionais por data.")]
         [SwaggerResponse(200, "Lista retornada com sucesso", typeof(IEnumerable<TransactionResponseDto>))]
-        [SwaggerResponse(401, "Não autorizado")]
-        [SwaggerResponse(500, "Erro interno")]
+        [SwaggerResponse(400, "Bad Request")]
+        [SwaggerResponse(401, "Não está permitido ao realizar essa busca")]
+        [SwaggerResponse(404, "Não encontrado")]
+        [SwaggerResponse(500, "Oops!!! Erro interno")]
         public async Task<IActionResult> List(
             [FromQuery] string? email,
             [FromQuery] DateTime? dataInicio,
