@@ -12,16 +12,16 @@
 
         protected Transaction() { }
 
-        public Transaction(Guid senderUserId, Guid receiverUserId, decimal amount)
+        public Transaction(Guid senderId, Guid receiverId, decimal amount)
         {
-            if (senderUserId == receiverUserId)
-                throw new ArgumentException("A transferência deve ser para outro usuário.");
+            if (senderId == receiverId)
+                throw new ArgumentException("Usuário não pode transferir para si mesmo.");
 
             if (amount <= 0)
-                throw new ArgumentException("O valor deve ser maior que zero.");
+                throw new ArgumentException("Valor da transferência deve ser maior que zero.");
 
-            SenderUserId = senderUserId;
-            ReceiverUserId = receiverUserId;
+            SenderUserId = senderId;
+            ReceiverUserId = receiverId;
             Amount = amount;
         }
     }

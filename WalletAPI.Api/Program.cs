@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using WalletAPI.Application.Interfaces;
 using WalletAPI.Application.Services;
@@ -26,6 +27,8 @@ namespace WalletAPI.Api
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserAppService, UserAppService>();
             builder.Services.AddScoped<IWalletAppService, WalletAppService>();
+            builder.Services.AddScoped<ITransactionAppService, TransactionAppService>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
             var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key não configurado.");
             var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer não configurado.");
@@ -48,7 +51,8 @@ namespace WalletAPI.Api
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtIssuer,
                     ValidAudience = jwtAudience,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    NameClaimType = JwtRegisteredClaimNames.Sub
                 };
             });
 
