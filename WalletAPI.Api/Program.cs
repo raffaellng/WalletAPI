@@ -21,7 +21,7 @@ namespace WalletAPI.Api
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<IAuthAppService, AuthAppService>();
-            builder.Services.AddScoped<IAuthService, JwtService>();
+            builder.Services.AddScoped<IAuthRepository, JwtService>();
             builder.Services.AddAuthorization();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();

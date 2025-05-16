@@ -1,4 +1,5 @@
-﻿using WalletAPI.Application.DTOs.Auth;
+﻿using WalletAPI.Application.DTOs.Auth.Request;
+using WalletAPI.Application.DTOs.Auth.Response;
 using WalletAPI.Application.Interfaces;
 using WalletAPI.Domain.Interfaces;
 
@@ -6,9 +7,9 @@ namespace WalletAPI.Application.Services
 {
     public class AuthAppService : IAuthAppService
     {
-        private readonly IAuthService _authService;
+        private readonly IAuthRepository _authService;
 
-        public AuthAppService(IAuthService authService)
+        public AuthAppService(IAuthRepository authService)
         {
             _authService = authService;
         }

@@ -10,7 +10,7 @@ using WalletAPI.Infrastructure.Data;
 
 namespace WalletAPI.Infrastructure.Auth
 {
-    public class JwtService : IAuthService
+    public class JwtService : IAuthRepository
     {
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;

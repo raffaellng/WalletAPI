@@ -1,4 +1,4 @@
-﻿namespace WalletAPI.Application.DTOs.Auth
+﻿namespace WalletAPI.Application.DTOs.Auth.Response
 {
     public class LoginResponseDto
     {
