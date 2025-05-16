@@ -38,5 +38,39 @@ namespace WalletAPI.Application.Services
             await _userRepository.UpdateAsync(receiver);
             await _transactionRepository.AddAsync(transaction);
         }
+
+        public async Task CreateManualTransferAsync(TransactionManualCreateRequestDto dto)
+        {
+            User? sender;
+            if (Guid.TryParse(dto.SenderEmailOrId, out var senderId))
+                sender = await _userRepository.GetByIdAsync(senderId);
+            else
+                sender = await _userRepository.GetByEmailAsync(dto.SenderEmailOrId);
+
+            if (sender == null)
+                throw new InvalidOperationException("Remetente não encontrado.");
+
+            // Buscar destinatário
+            User? receiver;
+            if (Guid.TryParse(dto.ReceiverEmailOrId, out var receiverId))
+                receiver = await _userRepository.GetByIdAsync(receiverId);
+            else
+                receiver = await _userRepository.GetByEmailAsync(dto.ReceiverEmailOrId);
+
+            if (receiver == null)
+                throw new InvalidOperationException("Destinatário não encontrado.");
+
+            if (receiver.Id == sender.Id)
+                throw new InvalidOperationException("Não é possível transferir para si mesmo.");
+
+            sender.Wallet.SubtractBalance(dto.Amount);
+            receiver.Wallet.AddBalance(dto.Amount);
+
+            var transaction = new Transaction(sender.Id, receiver.Id, dto.Amount);
+
+            await _userRepository.UpdateAsync(sender);
+            await _userRepository.UpdateAsync(receiver);
+            await _transactionRepository.AddAsync(transaction);
+        }
     }
 }

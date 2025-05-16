@@ -35,5 +35,17 @@ namespace WalletAPI.Api.Controllers
             await _transactionAppService.CreateTransferAsync(userId, dto);
             return NoContent();
         }
+
+        [HttpPost("manual-transfer")]
+        [SwaggerOperation(Summary = "Transferência administrativa", Description = "Permite transferir saldo de qualquer usuário para qualquer outro.")]
+        [SwaggerResponse(204, "Transferência realizada com sucesso")]
+        [SwaggerResponse(400, "Erro de validação")]
+        [SwaggerResponse(401, "Não autorizado")]
+        [SwaggerResponse(500, "Erro interno")]
+        public async Task<IActionResult> AdminTransfer([FromBody] TransactionManualCreateRequestDto dto)
+        {
+            await _transactionAppService.CreateManualTransferAsync(dto);
+            return NoContent();
+        }
     }
 }
