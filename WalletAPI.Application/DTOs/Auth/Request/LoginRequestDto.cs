@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WalletAPI.Application.DTOs.Auth
+namespace WalletAPI.Application.DTOs.Auth.Request
 {
     public class LoginRequestDto
     {
