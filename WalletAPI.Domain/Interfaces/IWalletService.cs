@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using WalletAPI.Domain.Entities;
 
 namespace WalletAPI.Domain.Interfaces
 {
     public interface IWalletService
     {
-        Task<decimal> GetBalanceAsync(Guid userId);
-        Task AddBalanceAsync(Guid userId, decimal amount);
-        Task TransferAsync(Guid senderUserId, Guid receiverUserId, decimal amount);
+        //Task<User?> GetByIdAsync(Guid id);
     }
 }

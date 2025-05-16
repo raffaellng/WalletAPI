@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WalletAPI.Application.DTOs.User.Request;
 using WalletAPI.Application.DTOs.User.Response;
@@ -7,6 +8,7 @@ using WalletAPI.Application.Interfaces;
 namespace WalletAPI.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
@@ -25,6 +27,12 @@ namespace WalletAPI.Api.Controllers
         {
             var result = await _userAppService.CreateUserAsync(dto);
             return StatusCode(201, result);
+        }
+
+        [HttpGet("secure-test")]
+        public IActionResult GetProtected()
+        {
+            return Ok("Você está autenticado!");
         }
     }
 }

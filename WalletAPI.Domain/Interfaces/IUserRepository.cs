@@ -6,5 +6,7 @@ namespace WalletAPI.Domain.Interfaces
     {
         Task<User?> GetByEmailAsync(string email);
         Task<User> AddAsync(User user);
+        Task<User?> GetByIdAsync(Guid id);
+        Task UpdateAsync(User user);
     }
 }

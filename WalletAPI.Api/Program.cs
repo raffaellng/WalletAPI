@@ -25,6 +25,7 @@ namespace WalletAPI.Api
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserAppService, UserAppService>();
+            builder.Services.AddScoped<IWalletAppService, WalletAppService>();
 
             var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key não configurado.");
             var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer não configurado.");
