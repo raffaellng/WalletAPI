@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using WalletAPI.Application.DTOs.Wallet.Request;
 using WalletAPI.Application.Interfaces;
 
@@ -21,12 +21,12 @@ namespace WalletAPI.Api.Controllers
 
         [HttpGet("saldo")]
         [SwaggerOperation(Summary = "Consultar saldo", Description = "Retorna o saldo atual da carteira do usuário autenticado.")]
-        [SwaggerResponse(200, "Saldo retornado com sucesso", typeof(object))] // ou um DTO se desejar
+        [SwaggerResponse(200, "Saldo retornado com sucesso", typeof(object))]
         [SwaggerResponse(401, "Token inválido ou ausente")]
         [SwaggerResponse(500, "Erro interno")]
         public async Task<IActionResult> GetBalance()
         {
-            var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdClaim == null || !Guid.TryParse(userIdClaim, out var userId))
                 return Unauthorized();
@@ -43,7 +43,7 @@ namespace WalletAPI.Api.Controllers
         [SwaggerResponse(500, "Erro interno")]
         public async Task<IActionResult> Deposit([FromBody] WalletDepositRequestDto dto)
         {
-            var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (userIdClaim == null || !Guid.TryParse(userIdClaim, out var userId))
                 return Unauthorized();

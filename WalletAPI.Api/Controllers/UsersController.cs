@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 using WalletAPI.Application.DTOs.User.Request;
 using WalletAPI.Application.DTOs.User.Response;
 using WalletAPI.Application.Interfaces;
@@ -25,14 +26,13 @@ namespace WalletAPI.Api.Controllers
         [SwaggerResponse(400, "Erro de validação")]
         public async Task<IActionResult> Create([FromBody] UserCreateRequestDto dto)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim, out var userId))
+                return Unauthorized();
+
             var result = await _userAppService.CreateUserAsync(dto);
             return StatusCode(201, result);
-        }
-
-        [HttpGet("secure-test")]
-        public IActionResult GetProtected()
-        {
-            return Ok("Você está autenticado!");
         }
     }
 }
