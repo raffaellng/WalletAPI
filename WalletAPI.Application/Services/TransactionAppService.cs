@@ -1,4 +1,5 @@
 ﻿using WalletAPI.Application.DTOs.Transfer.Request;
+using WalletAPI.Application.DTOs.Transfer.Response;
 using WalletAPI.Application.Interfaces;
 using WalletAPI.Domain.Entities;
 using WalletAPI.Domain.Interfaces;
@@ -71,6 +72,32 @@ namespace WalletAPI.Application.Services
             await _userRepository.UpdateAsync(sender);
             await _userRepository.UpdateAsync(receiver);
             await _transactionRepository.AddAsync(transaction);
+        }
+
+        public async Task<IEnumerable<TransactionResponseDto>> ListUserTransactionsAsync(Guid sessionUserId, string? email, DateTime? inicio, DateTime? fim)
+        {
+            Guid userIdToSearch;
+
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                var user = await _userRepository.GetByEmailAsync(email)
+                    ?? throw new InvalidOperationException("Usuário não encontrado.");
+                userIdToSearch = user.Id;
+            }
+            else
+            {
+                userIdToSearch = sessionUserId;
+            }
+
+            var transactions = await _transactionRepository.ListByUserAsync(userIdToSearch, inicio, fim);
+
+            return transactions.Select(t => new TransactionResponseDto
+            {
+                Id = t.Id,
+                Amount = t.Amount,
+                CreatedAt = t.CreatedAt,
+                ReceiverEmail = t.ReceiverUser?.Email ?? "Desconhecido"
+            });
         }
     }
 }
