@@ -22,7 +22,7 @@ namespace WalletAPI.Application.Services
 
             var token = _authService.GenerateToken(user.Id.ToString(), user.Email);
 
-            return new LoginResponseDto { Token = token };
+            return new LoginResponseDto { Token = "Bearer " + token };
         }
     }
 }

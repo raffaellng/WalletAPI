@@ -6,27 +6,33 @@ namespace WalletAPI.Application.Services
 {
     public class WalletAppService : IWalletAppService
     {
-        private readonly IWalletService _walletService;
-        private readonly ITransactionService _transactionService;
+        private readonly IUserRepository _userRepository;
 
-        public async Task<decimal> GetBalanceAsync(Guid userId)
+        public WalletAppService(IUserRepository userRepository)
         {
-            return await _walletService.GetBalanceAsync(userId);
+            _userRepository = userRepository;
         }
 
         public async Task AddBalanceAsync(Guid userId, decimal amount)
         {
-            await _walletService.AddBalanceAsync(userId, amount);
+            if (amount <= 0)
+                throw new ArgumentException("Valor deve ser maior que zero.");
+
+            var user = await _userRepository.GetByIdAsync(userId)
+                ?? throw new InvalidOperationException("Usuário não encontrado.");
+
+            user.Wallet.AddBalance(amount);
+            await _userRepository.UpdateAsync(user);
         }
 
-        public async Task TransferAsync(Guid senderUserId, Guid receiverUserId, decimal amount)
+        public async Task<decimal> GetBalanceAsync(Guid userId)
         {
-            await _walletService.TransferAsync(senderUserId, receiverUserId, amount);
+            var user = await _userRepository.GetByIdAsync(userId)
+            ?? throw new InvalidOperationException("Usuário não encontrado.");
+
+            return user.Wallet.Balance;
         }
 
-        public async Task<IEnumerable<Transaction>> GetTransactionsAsync(Guid userId, DateTime? from = null, DateTime? to = null)
-        {
-            return await _transactionService.GetByUserAsync(userId, from, to);
-        }
+
     }
 }

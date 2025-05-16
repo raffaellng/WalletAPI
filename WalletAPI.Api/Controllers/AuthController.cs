@@ -19,7 +19,7 @@ namespace WalletAPI.Api.Controllers
         [HttpPost("login")]
         [SwaggerOperation(Summary = "Login do usuário", Description = "Autenticação via JWT")]
         [SwaggerResponse(200, "Login realizado com sucesso", typeof(LoginResponseDto))]
-        [SwaggerResponse(401, "Credenciais inválidas")]
+        [SwaggerResponse(401, "Usuário ou senha inválidos.")]
         [SwaggerResponse(500, "Erro interno")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
