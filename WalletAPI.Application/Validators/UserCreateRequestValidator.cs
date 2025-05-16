@@ -11,13 +11,10 @@ namespace WalletAPI.Application.Validators
                 .NotEmpty()
                 .WithMessage("O nome é obrigatório.");
             RuleFor(x => x.Email)
-                .NotEmpty()
-                .WithMessage("O e-mail é obrigatório.")
-                .EmailAddress()
-                .WithMessage("E-mail inválido.");
+                .NotEmpty().WithMessage("O e-mail é obrigatório.")
+                .EmailAddress().WithMessage("E-mail inválido.");
             RuleFor(x => x.Password)
-                .NotEmpty()
-                .WithMessage("A senha é obrigatória.")
+                .NotEmpty().WithMessage("A senha é obrigatória.")
                 .MinimumLength(6).WithMessage("A senha tem que ter pelo menos 6 caracteres.");
         }
     }
