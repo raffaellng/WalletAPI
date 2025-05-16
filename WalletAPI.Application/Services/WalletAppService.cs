@@ -2,6 +2,7 @@
 using WalletAPI.Domain.Entities;
 using WalletAPI.Domain.Interfaces;
 
+
 namespace WalletAPI.Application.Services
 {
     public class WalletAppService : IWalletAppService
@@ -25,6 +26,16 @@ namespace WalletAPI.Application.Services
             await _userRepository.UpdateAsync(user);
         }
 
+        public async Task AddBalanceAsync(string emailOrId, decimal amount)
+        {
+            User? targetUser = await ValidEmailOrId(emailOrId);
+
+            targetUser.Wallet.AddBalance(amount);
+
+            await _userRepository.UpdateAsync(targetUser);
+        }
+
+
         public async Task<decimal> GetBalanceAsync(Guid userId)
         {
             var user = await _userRepository.GetByIdAsync(userId)
@@ -33,6 +44,25 @@ namespace WalletAPI.Application.Services
             return user.Wallet.Balance;
         }
 
+        public async Task<decimal> GetBalanceByEmailOrIdAsync(Guid userId, string emailOrId)
+        {
+            User? targetUser = await ValidEmailOrId(emailOrId);
 
+            return targetUser.Wallet.Balance;
+        }
+
+        private async Task<User?> ValidEmailOrId(string emailOrId)
+        {
+            User? targetUser;
+
+            if (Guid.TryParse(emailOrId, out var targetUserId))
+                targetUser = await _userRepository.GetByIdAsync(targetUserId);
+            else
+                targetUser = await _userRepository.GetByEmailAsync(emailOrId);
+
+            if (targetUser == null)
+                throw new InvalidOperationException("Usuário não encontrado.");
+            return targetUser;
+        }
     }
 }
