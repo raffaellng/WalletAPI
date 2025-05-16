@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using WalletAPI.Api.Middlewares;
 using WalletAPI.Application.Interfaces;
 using WalletAPI.Application.Services;
 using WalletAPI.Domain.Interfaces;
@@ -119,6 +120,7 @@ namespace WalletAPI.Api
             var app = builder.Build();
 
             //Middlewares
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
 
