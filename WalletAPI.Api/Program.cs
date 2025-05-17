@@ -11,6 +11,7 @@ using WalletAPI.Domain.Interfaces;
 using WalletAPI.Infrastructure.Auth;
 using WalletAPI.Infrastructure.Data;
 using WalletAPI.Infrastructure.Data.Repository;
+using WalletAPI.Infrastructure.Seed;
 
 namespace WalletAPI.Api
 {
@@ -151,6 +152,8 @@ namespace WalletAPI.Api
                 {
                     dbContext.Database.Migrate();
                 }
+
+                DbInitializer.Seed(dbContext);
             }
 
             app.Run();
