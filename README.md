@@ -52,7 +52,7 @@ senha: admin@123
 "ConnectionStrings": {
   "PostgreSQL": "Host=localhost;Port=5432;Database=walletapi;Username=postgres;Password=senhabanco",
   "SQLite": "Data Source=walletapi.db"
-}
+} ```
 
 ⚠️ Observação
     Caso o PostgreSQL nao tenha o banco de dados conforme o ConnectionStrings, 
