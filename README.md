@@ -6,8 +6,8 @@ API REST desenvolvida em C# utilizando .NET 8, seguindo Clean Architecture e DDD
 
 - Autenticação JWT
 - Criação de usuário
-- Consultar saldo (próprio ou de outro usuário)
-- Adicionar saldo à carteira
+- Consulta de saldo (próprio ou de outro usuário)
+- Adição de saldo à carteira
 - Transferência entre usuários autenticados
 - Transferência administrativa entre quaisquer usuários
 - Listagem de transferências realizadas (com filtros de data e e-mail)
@@ -30,40 +30,61 @@ API REST desenvolvida em C# utilizando .NET 8, seguindo Clean Architecture e DDD
 
 ## 🔐 Autenticação
 
-Utiliza JWT Bearer. Após o login, use o token no header
-usuario admin: admin@admin.com
-senha: admin@123
+Utiliza JWT Bearer. Após o login, utilize o token no cabeçalho da requisição.
 
-## 🧪 Usuários pré-cadastrados (seed)
+**Usuário admin:**  
+Email: `admin@admin.com`  
+Senha: `admin@123`
 
-| Email            | Senha    | Saldo Inicial |
-|------------------|----------|---------------|
-| user1@email.com  | 123456   | R$ 100        |
-| user2@email.com  | 123456   | R$ 200        |
-| user3@email.com  | 123456   | R$ 300        |
-| admin@admin.com  | admin@123| R$ 100        |
-|------------------|----------|---------------|
+## 🧪 Usuários pré-cadastrados (Seed)
 
-## 🐳 Execução local
+| Email             | Senha     | Saldo Inicial |
+|-------------------|-----------|----------------|
+| user1@email.com   | 123456    | R$ 100         |
+| user2@email.com   | 123456    | R$ 200         |
+| user3@email.com   | 123456    | R$ 300         |
+| admin@admin.com   | admin@123 | R$ 100         |
 
-1. Configure o `appsettings.json` com suas strings de conexão:
+## ⚙️ Configuração
+
+1. Edite o arquivo `appsettings.json` com suas strings de conexão:
 
 ```json
 "ConnectionStrings": {
   "PostgreSQL": "Host=localhost;Port=5432;Database=walletapi;Username=postgres;Password=senhabanco",
   "SQLite": "Data Source=walletapi.db"
-} 
+}
+```
 
-```markdown
+⚠️ **Observação**  
+- Caso o PostgreSQL não tenha o banco de dados conforme o `ConnectionStrings`,  
+- ou o banco esteja offline, ou o usuário e/ou senha estejam inválidos,  
+- a aplicação usará automaticamente o **SQLite** como fallback.
 
-⚠️ Observação
-    Caso o PostgreSQL nao tenha o banco de dados conforme o ConnectionStrings, 
-	o banco esteja offline ou com usuario é senha inválido, a aplicação usará SQLite automaticamente.
+## ▶️ Funcionamento
 
-## Funcionamento
-Rode o projeto:
+### Rodando via terminal:
+
+```bash
 dotnet build
 dotnet run --project WalletAPI.Api
+```
 
-Acesse o Swagger:
-https://localhost:44389/index.html
+### Rodando via Visual Studio:
+
+- Abra a solução;
+- Escolha o projeto **WalletAPI.Api** ou **Docker** como projeto de inicialização;
+- Pressione **F5** para executar.
+
+### ⚠️ Usando Docker:
+
+- Certifique-se de que o **Docker Desktop** está instalado e em execução;
+- Caso contrário, a aplicação em Docker não funcionará corretamente;
+- Para mais detalhes, consulte a documentação oficial:  
+  [https://docs.docker.com/](https://docs.docker.com/)
+
+## 📘 Swagger
+
+Acesse a documentação da API através do navegador:
+
+[https://localhost:44389/index.html](https://localhost:44389/index.html) – Projeto **WalletAPI.Api**
