@@ -2,7 +2,7 @@
 {
     public static class Mensagens
     {
-        public static string SessaoInvalida { get; } = "EXTRATOS_SESSAO_INVALIDA";
+        public static string SessaoInvalida { get; } = "Sessão inválida";
         public static string UsuarioSenhaInvalidos { get; } = "Usuário ou senha inválidos";
         public static string UsuarioNaoEncontrado { get; } = "Usuário não encontrado";
         public static string DestinatarioNaoEncontrado { get; } = "Destinatário não encontrado.";
